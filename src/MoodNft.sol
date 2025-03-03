@@ -16,10 +16,7 @@ contract MoodNft is ERC721 {
 
     mapping(uint256 => Mood) private s_tokedIdToMood;
 
-    constructor(
-        string memory sadSvgImageUri,
-        string memory happySvgImageUri
-    ) ERC721("Mood NFT", "MN") {
+    constructor(string memory sadSvgImageUri, string memory happySvgImageUri) ERC721("Mood NFT", "MN") {
         s_tokenCounter = 0;
         s_sadSvgImageUri = sadSvgImageUri;
         s_happySvgImageUri = happySvgImageUri;
@@ -45,9 +42,7 @@ contract MoodNft is ERC721 {
         return "data:application/json;base64,";
     }
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
         string memory imageURI;
         if (s_tokedIdToMood[tokenId] == Mood.HAPPY) {
             imageURI = s_happySvgImageUri;
@@ -55,22 +50,21 @@ contract MoodNft is ERC721 {
             imageURI = s_sadSvgImageUri;
         }
 
-        return
-            string(
-                abi.encodePacked(
-                    _baseURI(),
-                    Base64.encode(
-                        bytes(
-                            abi.encodePacked(
-                                '{"name": "',
-                                name(),
-                                '", "description":"An NFT that reflects the owners mood.", "attributes": [{"trait_type": "moodiness", "value": 100}], "image": "',
-                                imageURI,
-                                '"}'
-                            )
+        return string(
+            abi.encodePacked(
+                _baseURI(),
+                Base64.encode(
+                    bytes(
+                        abi.encodePacked(
+                            '{"name": "',
+                            name(),
+                            '", "description":"An NFT that reflects the owners mood.", "attributes": [{"trait_type": "moodiness", "value": 100}], "image": "',
+                            imageURI,
+                            '"}'
                         )
                     )
                 )
-            );
+            )
+        );
     }
 }
